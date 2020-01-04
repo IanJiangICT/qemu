@@ -220,35 +220,33 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
     CPURISCVState *env = &cpu->env;
     int i;
 
-    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "pc      ", env->pc);
+    qemu_fprintf(f, "S %d BEGIN\n", cs->cpu_index);
+    qemu_fprintf(f, "S %d %s " TARGET_FMT_lx "\n", cs->cpu_index, "pc      ", env->pc);
 #ifndef CONFIG_USER_ONLY
-    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "mhartid ", env->mhartid);
-    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "mstatus ", env->mstatus);
-    qemu_fprintf(f, " %s 0x%x\n", "mip     ", env->mip);
-    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "mie     ", env->mie);
-    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "mideleg ", env->mideleg);
-    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "medeleg ", env->medeleg);
-    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "mtvec   ", env->mtvec);
-    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "mepc    ", env->mepc);
-    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "mcause  ", env->mcause);
+    qemu_fprintf(f, "S %d %s " TARGET_FMT_lx "\n", cs->cpu_index, "mhartid ", env->mhartid);
+    qemu_fprintf(f, "S %d %s " TARGET_FMT_lx "\n", cs->cpu_index, "mstatus ", env->mstatus);
+    qemu_fprintf(f, "S %d %s 0x%x\n", cs->cpu_index, "mip     ", env->mip);
+    qemu_fprintf(f, "S %d %s " TARGET_FMT_lx "\n", cs->cpu_index, "mie     ", env->mie);
+    qemu_fprintf(f, "S %d %s " TARGET_FMT_lx "\n", cs->cpu_index, "mideleg ", env->mideleg);
+    qemu_fprintf(f, "S %d %s " TARGET_FMT_lx "\n", cs->cpu_index, "medeleg ", env->medeleg);
+    qemu_fprintf(f, "S %d %s " TARGET_FMT_lx "\n", cs->cpu_index, "mtvec   ", env->mtvec);
+    qemu_fprintf(f, "S %d %s " TARGET_FMT_lx "\n", cs->cpu_index, "mepc    ", env->mepc);
+    qemu_fprintf(f, "S %d %s " TARGET_FMT_lx "\n", cs->cpu_index, "mcause  ", env->mcause);
 #endif
 
     for (i = 0; i < 32; i++) {
-        qemu_fprintf(f, " %s " TARGET_FMT_lx,
+        qemu_fprintf(f, "S %d %s " TARGET_FMT_lx, cs->cpu_index,
                      riscv_int_regnames[i], env->gpr[i]);
-        if ((i & 3) == 3) {
-            qemu_fprintf(f, "\n");
-        }
+        qemu_fprintf(f, "\n");
     }
     if (flags & CPU_DUMP_FPU) {
         for (i = 0; i < 32; i++) {
-            qemu_fprintf(f, " %s %016" PRIx64,
+            qemu_fprintf(f, "S %d %s %016" PRIx64, cs->cpu_index,
                          riscv_fpr_regnames[i], env->fpr[i]);
-            if ((i & 3) == 3) {
-                qemu_fprintf(f, "\n");
-            }
+            qemu_fprintf(f, "\n");
         }
     }
+    qemu_fprintf(f, "S %d END\n", cs->cpu_index);
 }
 
 static void riscv_cpu_set_pc(CPUState *cs, vaddr value)
