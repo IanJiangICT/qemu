@@ -461,11 +461,11 @@ void target_disas(FILE *out, CPUState *cpu, target_ulong code,
     }
 
     for (pc = code; size > 0; pc += count, size -= count) {
-	fprintf(out, "0x" TARGET_FMT_lx ":  ", pc);
-	count = s.info.print_insn(pc, &s.info);
-	fprintf(out, "\n");
-	if (count < 0)
-	    break;
+        fprintf(out, "D %d 0x" TARGET_FMT_lx ":  ", cpu->cpu_index, pc);
+        count = s.info.print_insn(pc, &s.info);
+        fprintf(out, "\n");
+        if (count < 0)
+            break;
         if (size < count) {
             fprintf(out,
                     "Disassembler disagrees with translator over instruction "

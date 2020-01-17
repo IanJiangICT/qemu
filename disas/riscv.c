@@ -2646,6 +2646,15 @@ static void format_inst(char *buf, size_t buflen, size_t tab, rv_decode *dec)
     char tmp[64];
     const char *fmt;
 
+    /* Target hints to exit QEMU with one certain instruction:
+     *   snez zero,zero         or
+     *   sltu zero,zero,zero
+     */
+    if (dec->op == rv_op_snez && dec->rd == 0 && dec->rs1 == 0 && dec->rs2 == 0) {
+        int exit_status = 254;
+        printf("Target hints to exit with code %d\n", exit_status);
+        exit(exit_status);
+    }
     fmt = opcode_data[dec->op].format;
     while (*fmt) {
         switch (*fmt) {
