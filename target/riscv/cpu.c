@@ -221,6 +221,14 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
     int i;
 
     qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "pc      ", env->pc);
+
+    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "fflags  ", \
+                 riscv_cpu_get_fflags(env));
+    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "frm     ", env->frm);
+    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "fcsr    ", \
+                 (riscv_cpu_get_fflags(env) << FSR_AEXC_SHIFT) |\
+                 (env->frm << FSR_RD_SHIFT));
+
 #ifndef CONFIG_USER_ONLY
     qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "sstatus ", env->mstatus & \
                  (target_ulong)((SSTATUS_SIE | SSTATUS_SPIE | SSTATUS_UIE | \
