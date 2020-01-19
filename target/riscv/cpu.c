@@ -224,13 +224,25 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
 #ifndef CONFIG_USER_ONLY
     qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "mhartid ", env->mhartid);
     qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "mstatus ", env->mstatus);
-    qemu_fprintf(f, " %s 0x%x\n", "mip     ", env->mip);
-    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "mie     ", env->mie);
-    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "mideleg ", env->mideleg);
+    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "misa    ", env->misa);
     qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "medeleg ", env->medeleg);
+    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "mideleg ", env->mideleg);
+    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "mie     ", env->mie);
     qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "mtvec   ", env->mtvec);
+    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "mcounteren", env->mcounteren);
+    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "mscratch", env->mscratch);
     qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "mepc    ", env->mepc);
     qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "mcause  ", env->mcause);
+    qemu_fprintf(f, " %s " TARGET_FMT_lx "\n", "mtval   ", env->mbadaddr);
+    qemu_fprintf(f, " %s %08x\n", "mip     ", env->mip);
+    for (i = 0; i < 4; i++) {
+        qemu_fprintf(f, " pmpcfg%d  " TARGET_FMT_lx "\n", i, \
+                     pmpcfg_csr_read(env, i));
+    }
+    for (i = 0; i < 16; i++) {
+        qemu_fprintf(f, " pmpaddr%d " TARGET_FMT_lx "\n", i, \
+                     pmpaddr_csr_read(env, i));
+    }
 #endif
 
     for (i = 0; i < 32; i++) {
