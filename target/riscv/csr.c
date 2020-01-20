@@ -332,6 +332,12 @@ static int read_zero(CPURISCVState *env, int csrno, target_ulong *val)
     return *val = 0;
 }
 
+static int read_mimpid(CPURISCVState *env, int csrno, target_ulong *val)
+{
+    *val = env->mimpid;
+    return 0;
+}
+
 static int read_mhartid(CPURISCVState *env, int csrno, target_ulong *val)
 {
     *val = env->mhartid;
@@ -1297,7 +1303,7 @@ static riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
     /* Machine Information Registers */
     [CSR_MVENDORID] =           { any,  read_zero                           },
     [CSR_MARCHID] =             { any,  read_zero                           },
-    [CSR_MIMPID] =              { any,  read_zero                           },
+    [CSR_MIMPID] =              { any,  read_mimpid                         },
     [CSR_MHARTID] =             { any,  read_mhartid                        },
 
     /* Machine Trap Setup */
