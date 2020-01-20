@@ -39,6 +39,7 @@
 #define TYPE_RISCV_CPU_SIFIVE_E51       RISCV_CPU_TYPE_NAME("sifive-e51")
 #define TYPE_RISCV_CPU_SIFIVE_U34       RISCV_CPU_TYPE_NAME("sifive-u34")
 #define TYPE_RISCV_CPU_SIFIVE_U54       RISCV_CPU_TYPE_NAME("sifive-u54")
+#define TYPE_RISCV_CPU_MULTICO_RV64     RISCV_CPU_TYPE_NAME("multico-rv64")
 /* Deprecated */
 #define TYPE_RISCV_CPU_RV32IMACU_NOMMU  RISCV_CPU_TYPE_NAME("rv32imacu-nommu")
 #define TYPE_RISCV_CPU_RV32GCSU_V1_09_1 RISCV_CPU_TYPE_NAME("rv32gcsu-v1.9.1")
@@ -117,6 +118,8 @@ struct CPURISCVState {
 #ifndef CONFIG_USER_ONLY
     target_ulong priv;
     target_ulong resetvec;
+
+    target_ulong mimpid;
 
     target_ulong mhartid;
     target_ulong mstatus;
