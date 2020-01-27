@@ -32,8 +32,7 @@ static bool trans_flw(DisasContext *ctx, arg_flw *a)
     tcg_gen_addi_tl(t0, t0, a->imm);
 
     tcg_gen_qemu_ld_i64(cpu_fpr[a->rd], t0, ctx->mem_idx, MO_TEUL);
-    /* RISC-V requires NaN-boxing of narrower width floating point values */
-    tcg_gen_ori_i64(cpu_fpr[a->rd], cpu_fpr[a->rd], 0xffffffff00000000ULL);
+    gen_nanbox_fpr(ctx, a->rd);
 
     tcg_temp_free(t0);
     mark_fs_dirty(ctx);
