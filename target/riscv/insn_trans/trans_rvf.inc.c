@@ -222,6 +222,7 @@ static bool trans_fmin_s(DisasContext *ctx, arg_fmin_s *a)
 
     gen_helper_fmin_s(cpu_fpr[a->rd], cpu_env, cpu_fpr[a->rs1],
                       cpu_fpr[a->rs2]);
+    gen_nanbox_fpr(ctx, a->rd);
     mark_fs_dirty(ctx);
     return true;
 }
@@ -233,6 +234,7 @@ static bool trans_fmax_s(DisasContext *ctx, arg_fmax_s *a)
 
     gen_helper_fmax_s(cpu_fpr[a->rd], cpu_env, cpu_fpr[a->rs1],
                       cpu_fpr[a->rs2]);
+    gen_nanbox_fpr(ctx, a->rd);
     mark_fs_dirty(ctx);
     return true;
 }
