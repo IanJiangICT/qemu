@@ -106,6 +106,7 @@ static bool trans_fadd_s(DisasContext *ctx, arg_fadd_s *a)
     gen_set_rm(ctx, a->rm);
     gen_helper_fadd_s(cpu_fpr[a->rd], cpu_env,
                       cpu_fpr[a->rs1], cpu_fpr[a->rs2]);
+    gen_nanbox_fpr(ctx, a->rd);
     mark_fs_dirty(ctx);
     return true;
 }
@@ -118,6 +119,7 @@ static bool trans_fsub_s(DisasContext *ctx, arg_fsub_s *a)
     gen_set_rm(ctx, a->rm);
     gen_helper_fsub_s(cpu_fpr[a->rd], cpu_env,
                       cpu_fpr[a->rs1], cpu_fpr[a->rs2]);
+    gen_nanbox_fpr(ctx, a->rd);
     mark_fs_dirty(ctx);
     return true;
 }
@@ -130,6 +132,7 @@ static bool trans_fmul_s(DisasContext *ctx, arg_fmul_s *a)
     gen_set_rm(ctx, a->rm);
     gen_helper_fmul_s(cpu_fpr[a->rd], cpu_env,
                       cpu_fpr[a->rs1], cpu_fpr[a->rs2]);
+    gen_nanbox_fpr(ctx, a->rd);
     mark_fs_dirty(ctx);
     return true;
 }
@@ -142,6 +145,7 @@ static bool trans_fdiv_s(DisasContext *ctx, arg_fdiv_s *a)
     gen_set_rm(ctx, a->rm);
     gen_helper_fdiv_s(cpu_fpr[a->rd], cpu_env,
                       cpu_fpr[a->rs1], cpu_fpr[a->rs2]);
+    gen_nanbox_fpr(ctx, a->rd);
     mark_fs_dirty(ctx);
     return true;
 }
@@ -153,6 +157,7 @@ static bool trans_fsqrt_s(DisasContext *ctx, arg_fsqrt_s *a)
 
     gen_set_rm(ctx, a->rm);
     gen_helper_fsqrt_s(cpu_fpr[a->rd], cpu_env, cpu_fpr[a->rs1]);
+    gen_nanbox_fpr(ctx, a->rd);
     mark_fs_dirty(ctx);
     return true;
 }
